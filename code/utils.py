@@ -1,6 +1,6 @@
 import autograd.numpy as np
 
-def rbf(X, sigma_f, length_scale):
+def rbf(X, sigma_f, length_scale, noise_coef=0.):
 
     num_points = X.shape[0]
 
@@ -10,7 +10,8 @@ def rbf(X, sigma_f, length_scale):
     # (x_n - x_m)' (x_n - x_m) = x_n'x_n + x_m'x_m - 2x_n'x_m
     cov_ = diag.reshape((num_points, 1)) + diag.reshape((1, num_points)) - 2 * cov
 
-    return (sigma_f ** 2.) * np.exp(-1. / (2 * length_scale ** 2.) * cov_)
+    return (sigma_f ** 2.) * np.exp(-1. / (2 * length_scale ** 2.) * cov_) + noise_coef * np.eye(num_points)
+    return alpha * np.exp(-gamma / 2.0 * cov_) + np.eye(num_points) / beta
 
 
 def woodbury(A_diag, B, C, D):
