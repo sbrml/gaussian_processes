@@ -245,7 +245,7 @@ def sparse_gp_log_prob(X_n, X_m, Y, sigma_noise, sigma_f, length_scale, verbose=
 def free_energy(X_n, X_m, Y, sigma_noise, sigma_f, length_scale, verbose=False):
     """
     Free energy of a sparse variational GP. If the output is vector-valued, then
-    the individual dimensions are assumed independent. 
+    the individual dimensions are assumed to be independent. 
 
     X_m          - M x H matrix: M inducing points of dimension H
     X_n          - N x H matrix: N input data points of dimension H
@@ -290,7 +290,7 @@ def free_energy(X_n, X_m, Y, sigma_noise, sigma_f, length_scale, verbose=False):
     # Do stuff
     # ======================================================================
 
-    K = rbf(np.concatenate((X_n, X_m), axis=0), sigma_f, length_scale)
+    K = rbf(np.concatenate((X_n, X_m), axis=0), sigma_f, length_scale, noise_coef=sigma_noise**2)
     
     K_nn = K[:n, :n]
     K_mm = K[n:, n:]

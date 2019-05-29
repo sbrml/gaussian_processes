@@ -5,6 +5,7 @@ class IncompatibleShapeError(Exception):
 
 def rbf(X, sigma_f, length_scale, noise_coef=0.):
 
+    
     num_points = X.shape[0]
 
     cov = np.dot(X, X.T)
@@ -15,6 +16,20 @@ def rbf(X, sigma_f, length_scale, noise_coef=0.):
 
     return (sigma_f ** 2.) * np.exp(-1. / (2 * length_scale ** 2.) * cov_) + noise_coef * np.eye(num_points)
 
+
+def rbf_cross_terms(A, B, sigma_f, length_scale, noise_coef=0.):
+    """
+    A - N x H matrix
+    B - M x H matrix
+    """
+    
+    n = A.shape[0]
+    m = B.shape[0]
+    
+    A_grid = np.swapaxes(np.tile(A, reps=(m, 1, 1)), 0, 1)
+    B_grid = np.tile(B, reps=(n, 1, 1))
+    
+    return sigma_f**2 * np.exp(-1. / (2. * length_scale**2) * np.sum((A_grid - B_grid)**2, axis=-1))
 
 def woodbury(A_diag, B, C, D):
     """
